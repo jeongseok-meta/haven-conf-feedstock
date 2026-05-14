@@ -12,14 +12,13 @@ package:
 source:
   url: https://pypi.org/packages/source/h/haven-conf/haven_conf-${{ version }}.tar.gz
   sha256: d20dcd20c797f75781bc4e6eaecf42b78613fd2204b6c868cd8bf693a1ff34fa
+  patches:
+    - no-flit-entry-point.patch
 
 build:
   number: 1
   noarch: python
   script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
-  python:
-    entry_points:
-      - flit = flit:main
 
 requirements:
   host:
