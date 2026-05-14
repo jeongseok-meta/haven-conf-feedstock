@@ -1,0 +1,59 @@
+schema_version: 1
+
+context:
+  name: haven-conf
+  version: "0.1.0"
+  python_min: "3.10"
+
+package:
+  name: ${{ name|lower }}
+  version: ${{ version }}
+
+source:
+  url: https://pypi.org/packages/source/h/haven-conf/haven_conf-${{ version }}.tar.gz
+  sha256: d20dcd20c797f75781bc4e6eaecf42b78613fd2204b6c868cd8bf693a1ff34fa
+
+build:
+  number: 1
+  noarch: python
+  script: ${{ PYTHON }} -m pip install . -vv --no-deps --no-build-isolation
+  python:
+    entry_points:
+      - flit = flit:main
+
+requirements:
+  host:
+    - pip
+    - python ${{ python_min }}.*
+    - flit-core
+  run:
+    - fsspec
+    - python >=${{ python_min }}
+    - pyyaml
+
+tests:
+  - python:
+      imports:
+        - haven
+      pip_check: true
+      python_version: ${{ python_min }}.*
+  - script:
+      - python run_test.py
+    files:
+      recipe:
+        - run_test.py
+    requirements:
+      run:
+        - python ${{ python_min }}.*
+
+about:
+  homepage: https://github.com/jonmorton/haven
+  repository: https://github.com/jonmorton/haven
+  documentation: https://jonmorton.github.io/haven/
+  summary: A simple, flexible library for configuring Python projects using dataclasses
+  license: MIT
+  license_file: LICENSE
+
+extra:
+  recipe-maintainers:
+    - jeongseok-meta
